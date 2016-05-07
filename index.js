@@ -46,14 +46,14 @@ var TwentyTwenty = function (_Component) {
     value: function onDragMove(e) {
       var _ref = 'touches' in e ? e.touches[0] : e;
 
-      var screenX = _ref.screenX;
+      var clientX = _ref.clientX;
 
       var _refs$component$getBo = this.refs.component.getBoundingClientRect();
 
       var left = _refs$component$getBo.left;
       var width = _refs$component$getBo.width;
 
-      var position = 100 * (screenX - left) / width;
+      var position = 100 * (clientX - left) / width;
       position = Math.max(Math.min(position, 100), 0);
       this.setState({ position: position });
     }

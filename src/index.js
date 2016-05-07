@@ -18,11 +18,11 @@ export default class TwentyTwenty extends Component {
   }
 
   onDragMove(e) {
-    const { screenX } = ('touches' in e)
+    const { clientX } = ('touches' in e)
       ? e.touches[0]
       : e;
     const { left, width } = this.refs.component.getBoundingClientRect();
-    let position = 100 * (screenX - left) / width;
+    let position = 100 * (clientX - left) / width;
     position = Math.max(Math.min(position, 100), 0);
     this.setState({ position });
   }
