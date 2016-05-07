@@ -1,7 +1,7 @@
 {
   "name": "react-twentytwenty",
   "version": "1.0.0",
-  "description": "",
+  "description": "TwentyTwenty component for React",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +11,11 @@
     "type": "git",
     "url": "git+https://github.com/jacobp100/react-twentytwenty.git"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "react-component",
+    "twenty-twenty"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
