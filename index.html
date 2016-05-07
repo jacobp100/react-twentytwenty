@@ -1,0 +1,31 @@
+<!doctype html>
+<title>TwentyTwenty Demo</title>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1,user-scalable=no">
+<style>
+.slider {
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  animation: rainbow 3s infinite;
+}
+@keyframes rainbow {
+  0% {
+    background: red;
+  }
+  20% {
+    background: yellow;
+  }
+  40% {
+    background: lime;
+  }
+  60% {
+    background: cyan;
+  }
+  80% {
+    background: magenta;
+  }
+}
+</style>
+<div id="main"></div>
+<script src="dist/index.js"></script>
