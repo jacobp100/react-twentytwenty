@@ -6,7 +6,7 @@ A [TwentyTwenty](http://zurb.com/playground/twentytwenty) component for React
 npm install --save react-twentytwenty
 ```
 
-## [Demo](http://jacobp100.github.io/react-twentytwenty/)
+### [Demo (with cats)](http://jacobp100.github.io/react-twentytwenty/)
 
 * Images can be different sizes
 * Only uses valid CSS1, so works on older browsers
