@@ -21,37 +21,96 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var TwentyTwenty = function (_Component) {
   _inherits(TwentyTwenty, _Component);
 
-  function TwentyTwenty() {
+  function TwentyTwenty(props) {
     _classCallCheck(this, TwentyTwenty);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TwentyTwenty).call(this));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TwentyTwenty).call(this, props));
 
     _this.state = {
       position: 50
     };
+
+    _this.beginDrag = _this.beginDrag.bind(_this);
+    _this.endDrag = _this.endDrag.bind(_this);
+    _this.onDragMove = _this.onDragMove.bind(_this);
     return _this;
   }
 
   _createClass(TwentyTwenty, [{
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.endDrag();
+    }
+  }, {
+    key: 'onDragMove',
+    value: function onDragMove(e) {
+      var _ref = 'touches' in e ? e.touches[0] : e;
+
+      var screenX = _ref.screenX;
+
+      var _refs$component$getBo = this.refs.component.getBoundingClientRect();
+
+      var left = _refs$component$getBo.left;
+      var width = _refs$component$getBo.width;
+
+      var position = 100 * (screenX - left) / width;
+      position = Math.max(Math.min(position, 100), 0);
+      this.setState({ position: position });
+    }
+  }, {
+    key: 'beginDrag',
+    value: function beginDrag(e) {
+      if (e) e.preventDefault();
+      document.addEventListener('mousemove', this.onDragMove);
+      document.addEventListener('mouseup', this.endDrag);
+      document.addEventListener('touchmove', this.onDragMove);
+      document.addEventListener('touchend', this.endDrag);
+    }
+  }, {
+    key: 'endDrag',
+    value: function endDrag() {
+      document.removeEventListener('mousemove', this.onDragMove);
+      document.removeEventListener('mouseup', this.endDrag);
+      document.removeEventListener('touchmove', this.onDragMove);
+      document.removeEventListener('touchend', this.endDrag);
+    }
+  }, {
     key: 'render',
     value: function render() {
       var position = this.state.position;
       var _props = this.props;
       var children = _props.children;
-      var leftVerticalAlign = _props.leftVerticalAlign;
+      var verticalAlign = _props.verticalAlign;
       var leftHorizontalAlign = _props.leftHorizontalAlign;
-      var rightVerticalAlign = _props.rightVerticalAlign;
       var rightHorizontalAlign = _props.rightHorizontalAlign;
 
 
-      if (children.length !== 2) {
-        console.warn('Expected exactly two children'); // eslint-disable-line
+      if (children.length !== 2 && children.length !== 3) {
+        console.warn('Expected exactly two or three children'); // eslint-disable-line
         return null;
       }
 
       return _react2.default.createElement(
         'div',
-        { style: { overflow: 'hidden', whiteSpace: 'nowrap' } },
+        {
+          ref: 'component',
+          style: { position: 'relative', overflow: 'hidden', whiteSpace: 'nowrap' },
+          onMouseDown: this.beginDrag,
+          onTouchStart: this.beginDrag
+        },
+        _react2.default.createElement(
+          'div',
+          {
+            style: {
+              position: 'absolute',
+              left: position + '%',
+              height: '100%',
+              width: 0,
+              zIndex: 1
+            }
+          },
+          children[2]
+        ),
         _react2.default.createElement(
           'div',
           {
@@ -59,8 +118,9 @@ var TwentyTwenty = function (_Component) {
               display: 'inline-block',
               width: '100%',
               position: 'relative',
-              verticalAlign: leftVerticalAlign,
-              left: position - 100 + '%'
+              verticalAlign: verticalAlign,
+              left: position - 100 + '%',
+              overflow: 'hidden'
             }
           },
           _react2.default.createElement(
@@ -68,9 +128,8 @@ var TwentyTwenty = function (_Component) {
             {
               style: {
                 position: 'relative',
-                right: 100 - position + '%',
-                textAlign: leftHorizontalAlign,
-                overflow: 'hidden'
+                right: position - 100 + '%',
+                textAlign: leftHorizontalAlign
               }
             },
             children[0]
@@ -83,14 +142,20 @@ var TwentyTwenty = function (_Component) {
               display: 'inline-block',
               width: '100%',
               position: 'relative',
-              verticalAlign: rightVerticalAlign,
-              textAlign: rightHorizontalAlign,
-              left: position + '%'
+              verticalAlign: verticalAlign,
+              left: position - 100 + '%',
+              overflow: 'hidden'
             }
           },
           _react2.default.createElement(
             'div',
-            { style: { position: 'relative', right: position + '%', overflow: 'hidden' } },
+            {
+              style: {
+                position: 'relative',
+                right: position + '%',
+                textAlign: rightHorizontalAlign
+              }
+            },
             children[1]
           )
         )
@@ -106,15 +171,13 @@ exports.default = TwentyTwenty;
 
 TwentyTwenty.propTypes = {
   children: _react.PropTypes.array,
-  leftVerticalAlign: _react.PropTypes.string,
+  verticalAlign: _react.PropTypes.string,
   leftHorizontalAlign: _react.PropTypes.string,
-  rightVerticalAlign: _react.PropTypes.string,
   rightHorizontalAlign: _react.PropTypes.string
 };
 
-TwentyTwenty.defautProps = {
-  leftVerticalAlign: 'center',
+TwentyTwenty.defaultProps = {
+  verticalAlign: 'middle',
   leftHorizontalAlign: 'center',
-  rightVerticalAlign: 'center',
   rightHorizontalAlign: 'center'
 };

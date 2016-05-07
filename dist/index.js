@@ -72,7 +72,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _src2.default,
 	  { verticalAlign: 'bottom' },
 	  _react2.default.createElement('img', { alt: 'cat-1', src: 'http://exmoorpet.com/wp-content/uploads/2012/08/cat.png', width: '200' }),
-	  _react2.default.createElement('img', { alt: 'cat-2', src: 'http://www.cats.org.uk/uploads/images/pages/photo_latest14.jpg', width: '300' })
+	  _react2.default.createElement('img', { alt: 'cat-2', src: 'http://www.cats.org.uk/uploads/images/pages/photo_latest14.jpg', width: '300' }),
+	  _react2.default.createElement('div', { className: 'slider' })
 	), document.getElementById('main'));
 
 /***/ },
@@ -20213,7 +20214,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'onDragMove',
 	    value: function onDragMove(e) {
-	      var screenX = e.screenX;
+	      var _ref = 'touches' in e ? e.touches[0] : e;
+	
+	      var screenX = _ref.screenX;
 	
 	      var _refs$component$getBo = this.refs.component.getBoundingClientRect();
 	
@@ -20230,12 +20233,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (e) e.preventDefault();
 	      document.addEventListener('mousemove', this.onDragMove);
 	      document.addEventListener('mouseup', this.endDrag);
+	      document.addEventListener('touchmove', this.onDragMove);
+	      document.addEventListener('touchend', this.endDrag);
 	    }
 	  }, {
 	    key: 'endDrag',
 	    value: function endDrag() {
 	      document.removeEventListener('mousemove', this.onDragMove);
 	      document.removeEventListener('mouseup', this.endDrag);
+	      document.removeEventListener('touchmove', this.onDragMove);
+	      document.removeEventListener('touchend', this.endDrag);
 	    }
 	  }, {
 	    key: 'render',
@@ -20248,8 +20255,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var rightHorizontalAlign = _props.rightHorizontalAlign;
 	
 	
-	      if (children.length !== 2) {
-	        console.warn('Expected exactly two children'); // eslint-disable-line
+	      if (children.length !== 2 && children.length !== 3) {
+	        console.warn('Expected exactly two or three children'); // eslint-disable-line
 	        return null;
 	      }
 	
@@ -20257,9 +20264,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'div',
 	        {
 	          ref: 'component',
-	          style: { overflow: 'hidden', whiteSpace: 'nowrap' },
-	          onMouseDown: this.beginDrag
+	          style: { position: 'relative', overflow: 'hidden', whiteSpace: 'nowrap' },
+	          onMouseDown: this.beginDrag,
+	          onTouchStart: this.beginDrag
 	        },
+	        _react2.default.createElement(
+	          'div',
+	          {
+	            style: {
+	              position: 'absolute',
+	              left: position + '%',
+	              height: '100%',
+	              width: 0,
+	              zIndex: 1
+	            }
+	          },
+	          children[2]
+	        ),
 	        _react2.default.createElement(
 	          'div',
 	          {
