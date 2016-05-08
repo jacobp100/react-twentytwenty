@@ -20188,6 +20188,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	var DEGREES_IN_RADIAN = 180 / Math.PI;
+	
 	var TwentyTwenty = function (_Component) {
 	  _inherits(TwentyTwenty, _Component);
 	
@@ -20197,6 +20199,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TwentyTwenty).call(this, props));
 	
 	    _this.state = {
+	      startX: NaN,
+	      startY: NaN,
+	      isDragging: false,
 	      position: 50
 	    };
 	
@@ -20214,23 +20219,63 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'onDragMove',
 	    value: function onDragMove(e) {
-	      var _ref = 'touches' in e ? e.touches[0] : e;
+	      var isDragging = this.state.isDragging;
 	
-	      var clientX = _ref.clientX;
+	      var isTouch = 'touches' in e;
+	
+	      var _ref = isTouch ? e.touches[0] : e;
+	
+	      var pageX = _ref.pageX;
+	      var pageY = _ref.pageY;
+	
+	
+	      if (!isDragging && isTouch) {
+	        var _props = this.props;
+	        var maxAngleToBeginInteraction = _props.maxAngleToBeginInteraction;
+	        var minDistanceToBeginInteraction = _props.minDistanceToBeginInteraction;
+	        var _state = this.state;
+	        var startX = _state.startX;
+	        var startY = _state.startY;
+	
+	
+	        var dx = startX - pageX;
+	        var dy = startY - pageY;
+	
+	        var angle = Math.atan(dy / dx) * DEGREES_IN_RADIAN;
+	        var distance = Math.sqrt(dx * dx + dy * dy);
+	        isDragging = distance >= minDistanceToBeginInteraction;
+	
+	        if (isDragging && Math.abs(angle) > maxAngleToBeginInteraction) {
+	          // They're trying to scroll vertically
+	          this.endDrag();
+	          return;
+	        } else if (!isDragging) {
+	          return;
+	        }
+	      }
 	
 	      var _refs$component$getBo = this.refs.component.getBoundingClientRect();
 	
 	      var left = _refs$component$getBo.left;
 	      var width = _refs$component$getBo.width;
 	
-	      var position = 100 * (clientX - left) / width;
+	      var position = 100 * (pageX - left) / width;
 	      position = Math.max(Math.min(position, 100), 0);
-	      this.setState({ position: position });
+	      this.setState({ position: position, isDragging: isDragging });
 	    }
 	  }, {
 	    key: 'beginDrag',
 	    value: function beginDrag(e) {
 	      if (e) e.preventDefault();
+	
+	      var _ref2 = 'touches' in e ? e.touches[0] : e;
+	
+	      var pageX = _ref2.pageX;
+	      var pageY = _ref2.pageY;
+	
+	
+	      this.setState({ startX: pageX, startY: pageY });
+	
 	      document.addEventListener('mousemove', this.onDragMove);
 	      document.addEventListener('mouseup', this.endDrag);
 	      document.addEventListener('touchmove', this.onDragMove);
@@ -20243,16 +20288,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      document.removeEventListener('mouseup', this.endDrag);
 	      document.removeEventListener('touchmove', this.onDragMove);
 	      document.removeEventListener('touchend', this.endDrag);
+	
+	      this.setState({ isDragging: false, startY: NaN, endY: NaN });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var position = this.state.position;
-	      var _props = this.props;
-	      var children = _props.children;
-	      var verticalAlign = _props.verticalAlign;
-	      var leftHorizontalAlign = _props.leftHorizontalAlign;
-	      var rightHorizontalAlign = _props.rightHorizontalAlign;
+	      var _props2 = this.props;
+	      var children = _props2.children;
+	      var verticalAlign = _props2.verticalAlign;
+	      var leftHorizontalAlign = _props2.leftHorizontalAlign;
+	      var rightHorizontalAlign = _props2.rightHorizontalAlign;
 	
 	
 	      if (children.length !== 2 && children.length !== 3) {
@@ -20343,13 +20390,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  children: _react.PropTypes.array,
 	  verticalAlign: _react.PropTypes.string,
 	  leftHorizontalAlign: _react.PropTypes.string,
-	  rightHorizontalAlign: _react.PropTypes.string
+	  rightHorizontalAlign: _react.PropTypes.string,
+	  minDistanceToBeginInteraction: _react.PropTypes.number,
+	  maxAngleToBeginInteraction: _react.PropTypes.number
 	};
 	
 	TwentyTwenty.defaultProps = {
 	  verticalAlign: 'middle',
 	  leftHorizontalAlign: 'center',
-	  rightHorizontalAlign: 'center'
+	  rightHorizontalAlign: 'center',
+	  minDistanceToBeginInteraction: 15,
+	  maxAngleToBeginInteraction: 30
 	};
 
 /***/ }

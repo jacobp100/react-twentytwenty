@@ -1,10 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 
+const DEGREES_IN_RADIAN = 180 / Math.PI;
+
 export default class TwentyTwenty extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      startX: NaN,
+      startY: NaN,
+      isDragging: false,
       position: 50,
     };
 
@@ -18,17 +23,47 @@ export default class TwentyTwenty extends Component {
   }
 
   onDragMove(e) {
-    const { pageX } = ('touches' in e)
+    let { isDragging } = this.state;
+    const isTouch = 'touches' in e;
+
+    const { pageX, pageY } = isTouch
       ? e.touches[0]
       : e;
+
+    if (!isDragging && isTouch) {
+      const { maxAngleToBeginInteraction, minDistanceToBeginInteraction } = this.props;
+      const { startX, startY } = this.state;
+
+      const dx = startX - pageX;
+      const dy = startY - pageY;
+
+      const angle = Math.atan(dy / dx) * DEGREES_IN_RADIAN;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      isDragging = distance >= minDistanceToBeginInteraction;
+
+      if (isDragging && Math.abs(angle) > maxAngleToBeginInteraction) {
+        // They're trying to scroll vertically
+        this.endDrag();
+        return;
+      } else if (!isDragging) {
+        return;
+      }
+    }
+
     const { left, width } = this.refs.component.getBoundingClientRect();
     let position = 100 * (pageX - left) / width;
     position = Math.max(Math.min(position, 100), 0);
-    this.setState({ position });
+    this.setState({ position, isDragging });
   }
 
   beginDrag(e) {
     if (e) e.preventDefault();
+    const { pageX, pageY } = ('touches' in e)
+      ? e.touches[0]
+      : e;
+
+    this.setState({ startX: pageX, startY: pageY });
+
     document.addEventListener('mousemove', this.onDragMove);
     document.addEventListener('mouseup', this.endDrag);
     document.addEventListener('touchmove', this.onDragMove);
@@ -40,6 +75,8 @@ export default class TwentyTwenty extends Component {
     document.removeEventListener('mouseup', this.endDrag);
     document.removeEventListener('touchmove', this.onDragMove);
     document.removeEventListener('touchend', this.endDrag);
+
+    this.setState({ isDragging: false, startY: NaN, endY: NaN });
   }
 
   render() {
@@ -125,10 +162,14 @@ TwentyTwenty.propTypes = {
   verticalAlign: PropTypes.string,
   leftHorizontalAlign: PropTypes.string,
   rightHorizontalAlign: PropTypes.string,
+  minDistanceToBeginInteraction: PropTypes.number,
+  maxAngleToBeginInteraction: PropTypes.number,
 };
 
 TwentyTwenty.defaultProps = {
   verticalAlign: 'middle',
   leftHorizontalAlign: 'center',
   rightHorizontalAlign: 'center',
+  minDistanceToBeginInteraction: 15,
+  maxAngleToBeginInteraction: 30,
 };
