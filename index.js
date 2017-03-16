@@ -32,7 +32,7 @@ var TwentyTwenty = function (_Component) {
       startX: NaN,
       startY: NaN,
       isDragging: false,
-      position: props.initialPosition || 50
+      position: props.initialPosition
     };
 
     _this.beginDrag = _this.beginDrag.bind(_this);
@@ -49,6 +49,8 @@ var TwentyTwenty = function (_Component) {
   }, {
     key: 'onDragMove',
     value: function onDragMove(e) {
+      if (!this.props.isDraggingEnabled) return;
+
       var isDragging = this.state.isDragging;
 
       var isTouch = 'touches' in e;
@@ -94,6 +96,7 @@ var TwentyTwenty = function (_Component) {
     key: 'beginDrag',
     value: function beginDrag(e) {
       if (e) e.preventDefault();
+      if (!this.props.isDraggingEnabled) return;
 
       var _ref2 = 'touches' in e ? e.touches[0] : e,
           pageX = _ref2.pageX,
@@ -217,7 +220,9 @@ TwentyTwenty.propTypes = {
   leftHorizontalAlign: _react.PropTypes.string,
   rightHorizontalAlign: _react.PropTypes.string,
   minDistanceToBeginInteraction: _react.PropTypes.number,
-  maxAngleToBeginInteraction: _react.PropTypes.number
+  maxAngleToBeginInteraction: _react.PropTypes.number,
+  initialPosition: _react.PropTypes.number,
+  isDraggingEnabled: _react.PropTypes.bool
 };
 
 TwentyTwenty.defaultProps = {
@@ -225,5 +230,7 @@ TwentyTwenty.defaultProps = {
   leftHorizontalAlign: 'center',
   rightHorizontalAlign: 'center',
   minDistanceToBeginInteraction: 15,
-  maxAngleToBeginInteraction: 30
+  maxAngleToBeginInteraction: 30,
+  initialPosition: 50,
+  isDraggingEnabled: true
 };

@@ -21552,7 +21552,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      startX: NaN,
 	      startY: NaN,
 	      isDragging: false,
-	      position: props.initialPosition || 50
+	      position: props.initialPosition
 	    };
 	
 	    _this.beginDrag = _this.beginDrag.bind(_this);
@@ -21569,6 +21569,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'onDragMove',
 	    value: function onDragMove(e) {
+	      if (!this.props.isDraggingEnabled) return;
+	
 	      var isDragging = this.state.isDragging;
 	
 	      var isTouch = 'touches' in e;
@@ -21614,6 +21616,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'beginDrag',
 	    value: function beginDrag(e) {
 	      if (e) e.preventDefault();
+	      if (!this.props.isDraggingEnabled) return;
 	
 	      var _ref2 = 'touches' in e ? e.touches[0] : e,
 	          pageX = _ref2.pageX,
@@ -21737,7 +21740,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  leftHorizontalAlign: _react.PropTypes.string,
 	  rightHorizontalAlign: _react.PropTypes.string,
 	  minDistanceToBeginInteraction: _react.PropTypes.number,
-	  maxAngleToBeginInteraction: _react.PropTypes.number
+	  maxAngleToBeginInteraction: _react.PropTypes.number,
+	  initialPosition: _react.PropTypes.number,
+	  isDraggingEnabled: _react.PropTypes.bool
 	};
 	
 	TwentyTwenty.defaultProps = {
@@ -21745,7 +21750,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  leftHorizontalAlign: 'center',
 	  rightHorizontalAlign: 'center',
 	  minDistanceToBeginInteraction: 15,
-	  maxAngleToBeginInteraction: 30
+	  maxAngleToBeginInteraction: 30,
+	  initialPosition: 50,
+	  isDraggingEnabled: true
 	};
 
 /***/ }
