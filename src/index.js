@@ -10,7 +10,7 @@ export default class TwentyTwenty extends Component {
       startX: NaN,
       startY: NaN,
       isDragging: false,
-      position: 50,
+      position: props.initialPosition || 50,
     };
 
     this.beginDrag = this.beginDrag.bind(this);
