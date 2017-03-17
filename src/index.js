@@ -10,7 +10,7 @@ export default class TwentyTwenty extends Component {
       startX: NaN,
       startY: NaN,
       isDragging: false,
-      position: 50,
+      position: props.initialPosition,
     };
 
     this.beginDrag = this.beginDrag.bind(this);
@@ -23,6 +23,8 @@ export default class TwentyTwenty extends Component {
   }
 
   onDragMove(e) {
+    if (!this.props.isDraggingEnabled) return;
+
     let { isDragging } = this.state;
     const isTouch = 'touches' in e;
 
@@ -58,6 +60,8 @@ export default class TwentyTwenty extends Component {
 
   beginDrag(e) {
     if (e) e.preventDefault();
+    if (!this.props.isDraggingEnabled) return;
+
     const { pageX, pageY } = ('touches' in e)
       ? e.touches[0]
       : e;
@@ -164,6 +168,8 @@ TwentyTwenty.propTypes = {
   rightHorizontalAlign: PropTypes.string,
   minDistanceToBeginInteraction: PropTypes.number,
   maxAngleToBeginInteraction: PropTypes.number,
+  initialPosition: PropTypes.number,
+  isDraggingEnabled: PropTypes.bool,
 };
 
 TwentyTwenty.defaultProps = {
@@ -172,4 +178,6 @@ TwentyTwenty.defaultProps = {
   rightHorizontalAlign: 'center',
   minDistanceToBeginInteraction: 15,
   maxAngleToBeginInteraction: 30,
+  initialPosition: 50,
+  isDraggingEnabled: true,
 };

@@ -26,13 +26,13 @@ var TwentyTwenty = function (_Component) {
   function TwentyTwenty(props) {
     _classCallCheck(this, TwentyTwenty);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TwentyTwenty).call(this, props));
+    var _this = _possibleConstructorReturn(this, (TwentyTwenty.__proto__ || Object.getPrototypeOf(TwentyTwenty)).call(this, props));
 
     _this.state = {
       startX: NaN,
       startY: NaN,
       isDragging: false,
-      position: 50
+      position: props.initialPosition
     };
 
     _this.beginDrag = _this.beginDrag.bind(_this);
@@ -49,23 +49,23 @@ var TwentyTwenty = function (_Component) {
   }, {
     key: 'onDragMove',
     value: function onDragMove(e) {
+      if (!this.props.isDraggingEnabled) return;
+
       var isDragging = this.state.isDragging;
 
       var isTouch = 'touches' in e;
 
-      var _ref = isTouch ? e.touches[0] : e;
-
-      var pageX = _ref.pageX;
-      var pageY = _ref.pageY;
-
+      var _ref = isTouch ? e.touches[0] : e,
+          pageX = _ref.pageX,
+          pageY = _ref.pageY;
 
       if (!isDragging && isTouch) {
-        var _props = this.props;
-        var maxAngleToBeginInteraction = _props.maxAngleToBeginInteraction;
-        var minDistanceToBeginInteraction = _props.minDistanceToBeginInteraction;
-        var _state = this.state;
-        var startX = _state.startX;
-        var startY = _state.startY;
+        var _props = this.props,
+            maxAngleToBeginInteraction = _props.maxAngleToBeginInteraction,
+            minDistanceToBeginInteraction = _props.minDistanceToBeginInteraction;
+        var _state = this.state,
+            startX = _state.startX,
+            startY = _state.startY;
 
 
         var dx = startX - pageX;
@@ -84,10 +84,9 @@ var TwentyTwenty = function (_Component) {
         }
       }
 
-      var _refs$component$getBo = this.refs.component.getBoundingClientRect();
-
-      var left = _refs$component$getBo.left;
-      var width = _refs$component$getBo.width;
+      var _refs$component$getBo = this.refs.component.getBoundingClientRect(),
+          left = _refs$component$getBo.left,
+          width = _refs$component$getBo.width;
 
       var position = 100 * (pageX - left) / width;
       position = Math.max(Math.min(position, 100), 0);
@@ -97,12 +96,11 @@ var TwentyTwenty = function (_Component) {
     key: 'beginDrag',
     value: function beginDrag(e) {
       if (e) e.preventDefault();
+      if (!this.props.isDraggingEnabled) return;
 
-      var _ref2 = 'touches' in e ? e.touches[0] : e;
-
-      var pageX = _ref2.pageX;
-      var pageY = _ref2.pageY;
-
+      var _ref2 = 'touches' in e ? e.touches[0] : e,
+          pageX = _ref2.pageX,
+          pageY = _ref2.pageY;
 
       this.setState({ startX: pageX, startY: pageY });
 
@@ -125,11 +123,11 @@ var TwentyTwenty = function (_Component) {
     key: 'render',
     value: function render() {
       var position = this.state.position;
-      var _props2 = this.props;
-      var children = _props2.children;
-      var verticalAlign = _props2.verticalAlign;
-      var leftHorizontalAlign = _props2.leftHorizontalAlign;
-      var rightHorizontalAlign = _props2.rightHorizontalAlign;
+      var _props2 = this.props,
+          children = _props2.children,
+          verticalAlign = _props2.verticalAlign,
+          leftHorizontalAlign = _props2.leftHorizontalAlign,
+          rightHorizontalAlign = _props2.rightHorizontalAlign;
 
 
       if (children.length !== 2 && children.length !== 3) {
@@ -222,7 +220,9 @@ TwentyTwenty.propTypes = {
   leftHorizontalAlign: _react.PropTypes.string,
   rightHorizontalAlign: _react.PropTypes.string,
   minDistanceToBeginInteraction: _react.PropTypes.number,
-  maxAngleToBeginInteraction: _react.PropTypes.number
+  maxAngleToBeginInteraction: _react.PropTypes.number,
+  initialPosition: _react.PropTypes.number,
+  isDraggingEnabled: _react.PropTypes.bool
 };
 
 TwentyTwenty.defaultProps = {
@@ -230,5 +230,7 @@ TwentyTwenty.defaultProps = {
   leftHorizontalAlign: 'center',
   rightHorizontalAlign: 'center',
   minDistanceToBeginInteraction: 15,
-  maxAngleToBeginInteraction: 30
+  maxAngleToBeginInteraction: 30,
+  initialPosition: 50,
+  isDraggingEnabled: true
 };
