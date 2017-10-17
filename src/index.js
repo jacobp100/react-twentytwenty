@@ -111,7 +111,7 @@ export default class TwentyTwenty extends Component {
             zIndex: 1,
           }}
         >
-          {children[2]}
+          {splitter}
         </div>
         <div
           style={{
@@ -130,7 +130,7 @@ export default class TwentyTwenty extends Component {
               textAlign: leftHorizontalAlign,
             }}
           >
-            {children[0]}
+            {left}
           </div>
         </div>
         <div
@@ -150,7 +150,7 @@ export default class TwentyTwenty extends Component {
               textAlign: rightHorizontalAlign,
             }}
           >
-            {children[1]}
+            {right}
           </div>
         </div>
       </div>
