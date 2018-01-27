@@ -19,6 +19,9 @@
     "compare",
     "image"
   ],
+  "files": [
+    "index.js"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
