@@ -47,6 +47,13 @@ var TwentyTwenty = function (_Component) {
       this.endDrag();
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(_ref) {
+      var newPosition = _ref.newPosition;
+
+      this.setState({ position: newPosition });
+    }
+  }, {
     key: 'onDragMove',
     value: function onDragMove(e) {
       if (!this.props.isDraggingEnabled) return;
@@ -55,9 +62,9 @@ var TwentyTwenty = function (_Component) {
 
       var isTouch = 'touches' in e;
 
-      var _ref = isTouch ? e.touches[0] : e,
-          pageX = _ref.pageX,
-          pageY = _ref.pageY;
+      var _ref2 = isTouch ? e.touches[0] : e,
+          pageX = _ref2.pageX,
+          pageY = _ref2.pageY;
 
       if (!isDragging && isTouch) {
         var _props = this.props,
@@ -98,9 +105,9 @@ var TwentyTwenty = function (_Component) {
       if (e) e.preventDefault();
       if (!this.props.isDraggingEnabled) return;
 
-      var _ref2 = 'touches' in e ? e.touches[0] : e,
-          pageX = _ref2.pageX,
-          pageY = _ref2.pageY;
+      var _ref3 = 'touches' in e ? e.touches[0] : e,
+          pageX = _ref3.pageX,
+          pageY = _ref3.pageY;
 
       this.setState({ startX: pageX, startY: pageY });
 

@@ -22,6 +22,10 @@ export default class TwentyTwenty extends Component {
     this.endDrag();
   }
 
+  componentWillReceiveProps({ newPosition }) {
+    this.setState({ position: newPosition });
+  }
+
   onDragMove(e) {
     if (!this.props.isDraggingEnabled) return;
 
