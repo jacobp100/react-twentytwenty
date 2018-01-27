@@ -18,10 +18,10 @@ npm install --save react-twentytwenty
 TL;DR,
 
 ```js
-<TwentyTwenty>
-  <img src="left" />
-  <img src="right" />
-</TwentyTwenty>
+<TwentyTwenty
+  left={<img src="left" />}
+  right={<img src="right" />}
+/>
 ```
 
 ## Properties
@@ -35,14 +35,14 @@ You can also use this component as a [controlled component](https://reactjs.org/
 
 ### Slider
 
-You can include a third child to be a slider. The slider is placed inside a zero-width, full height element, positioned to the correct left offset: basically just set `height: 100%` on your slider.
+You can include a custom slider. The slider is placed inside a zero-width, full height element, positioned to the correct left offset: basically just set `height: 100%` and a `width` on your slider.
 
 ```js
-<TwentyTwenty>
-  <img src="left" />
-  <img src="right" />
-  <div className="slider" />
-</TwentyTwenty>
+<TwentyTwenty
+  left={<img src="left" />}
+  right={<img src="right" />}
+  slider={<div className="slider" />}
+/>
 ```
 
 ```css

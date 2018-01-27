@@ -99,16 +99,13 @@ export default class TwentyTwenty extends Component {
     const { position = this.state.position } = this.props;
     const {
       children,
+      left = children[0], // legacy API
+      right = children[1],
+      splitter = children[2],
       verticalAlign,
       leftHorizontalAlign,
       rightHorizontalAlign,
     } = this.props;
-
-
-    if (children.length !== 2 && children.length !== 3) {
-      console.warn('Expected exactly two or three children'); // eslint-disable-line
-      return null;
-    }
 
     return (
       <div
@@ -126,7 +123,7 @@ export default class TwentyTwenty extends Component {
             zIndex: 1,
           }}
         >
-          {children[2]}
+          {splitter}
         </div>
         <div
           style={{
@@ -145,7 +142,7 @@ export default class TwentyTwenty extends Component {
               textAlign: leftHorizontalAlign,
             }}
           >
-            {children[0]}
+            {left}
           </div>
         </div>
         <div
@@ -165,7 +162,7 @@ export default class TwentyTwenty extends Component {
               textAlign: rightHorizontalAlign,
             }}
           >
-            {children[1]}
+            {right}
           </div>
         </div>
       </div>
@@ -174,7 +171,9 @@ export default class TwentyTwenty extends Component {
 }
 
 TwentyTwenty.propTypes = {
-  children: PropTypes.array,
+  left: PropTypes.element.isRequired,
+  right: PropTypes.element.isRequired,
+  splitter: PropTypes.element,
   verticalAlign: PropTypes.string,
   leftHorizontalAlign: PropTypes.string,
   rightHorizontalAlign: PropTypes.string,
