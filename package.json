@@ -1,6 +1,6 @@
 {
   "name": "react-twentytwenty",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "TwentyTwenty component for React",
   "main": "index.js",
   "scripts": {

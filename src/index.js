@@ -98,10 +98,10 @@ export default class TwentyTwenty extends Component {
   render() {
     const { position = this.state.position } = this.props;
     const {
-      children,
+      children = [],
       left = children[0], // legacy API
       right = children[1],
-      splitter = children[2],
+      slider = children[2],
       verticalAlign,
       leftHorizontalAlign,
       rightHorizontalAlign,
@@ -123,7 +123,7 @@ export default class TwentyTwenty extends Component {
             zIndex: 1,
           }}
         >
-          {splitter}
+          {slider}
         </div>
         <div
           style={{
