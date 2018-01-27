@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 
 const DEGREES_IN_RADIAN = 180 / Math.PI;
 
@@ -6,11 +7,13 @@ export default class TwentyTwenty extends Component {
   constructor(props) {
     super(props);
 
+    // initialPosition was between 0 and 100, defaultPosition is between 0 and 1
+    const { initialPosition = 50, defaultPosition = initialPosition / 100 } = props
     this.state = {
       startX: NaN,
       startY: NaN,
       isDragging: false,
-      position: props.initialPosition,
+      position: defaultPosition,
     };
 
     this.beginDrag = this.beginDrag.bind(this);
@@ -53,9 +56,18 @@ export default class TwentyTwenty extends Component {
     }
 
     const { left, width } = this.refs.component.getBoundingClientRect();
-    let position = 100 * (pageX - left) / width;
-    position = Math.max(Math.min(position, 100), 0);
-    this.setState({ position, isDragging });
+    let position = (pageX - left) / width;
+    position = Math.max(Math.min(position, 1), 0);
+
+    if (this.props.position != null) {
+      this.setState(state => (
+        !state.isDragging !== isDragging ? { isDragging } : null
+      ), () => {
+        this.props.onChange(position);
+      });
+    } else {
+      this.setState({ position, isDragging });
+    }
   }
 
   beginDrag(e) {
@@ -84,7 +96,7 @@ export default class TwentyTwenty extends Component {
   }
 
   render() {
-    const { position } = this.state;
+    const { position = this.state.position } = this.props;
     const {
       children,
       verticalAlign,
@@ -108,7 +120,7 @@ export default class TwentyTwenty extends Component {
         <div
           style={{
             position: 'absolute',
-            left: `${position}%`,
+            left: `${position * 100}%`,
             height: '100%',
             width: 0,
             zIndex: 1,
@@ -122,14 +134,14 @@ export default class TwentyTwenty extends Component {
             width: '100%',
             position: 'relative',
             verticalAlign,
-            left: `${position - 100}%`,
+            left: `${(position - 1) * 100}%`,
             overflow: 'hidden',
           }}
         >
           <div
             style={{
               position: 'relative',
-              right: `${position - 100}%`,
+              right: `${(position - 1) * 100}%`,
               textAlign: leftHorizontalAlign,
             }}
           >
@@ -142,14 +154,14 @@ export default class TwentyTwenty extends Component {
             width: '100%',
             position: 'relative',
             verticalAlign,
-            left: `${position - 100}%`,
+            left: `${(position - 1) * 100}%`,
             overflow: 'hidden',
           }}
         >
           <div
             style={{
               position: 'relative',
-              right: `${position}%`,
+              right: `${position * 100}%`,
               textAlign: rightHorizontalAlign,
             }}
           >
@@ -168,8 +180,10 @@ TwentyTwenty.propTypes = {
   rightHorizontalAlign: PropTypes.string,
   minDistanceToBeginInteraction: PropTypes.number,
   maxAngleToBeginInteraction: PropTypes.number,
-  initialPosition: PropTypes.number,
+  defaultPosition: PropTypes.number,
+  position: PropTypes.number,
   isDraggingEnabled: PropTypes.bool,
+  onChange: PropTypes.func,
 };
 
 TwentyTwenty.defaultProps = {
@@ -178,6 +192,6 @@ TwentyTwenty.defaultProps = {
   rightHorizontalAlign: 'center',
   minDistanceToBeginInteraction: 15,
   maxAngleToBeginInteraction: 30,
-  initialPosition: 50,
   isDraggingEnabled: true,
+  onChange: () => {},
 };

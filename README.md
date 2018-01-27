@@ -29,6 +29,9 @@ TL;DR,
 * `verticalAlign`: One of 'top', 'middle', or 'bottom'
 * `leftHorizontalAlign`: One of 'left', 'center', or 'right'
 * `rightHorizontalAlign`: One of 'left', 'center', or 'right'
+* `defaultPosition`: The position to use when mounted (between 0 and 1)
+
+You can also use this component as a [controlled component](https://reactjs.org/docs/uncontrolled-components.html). Just provide the props `position`, and listen to the `onChange` event, which will called with a number when the slider is moved.
 
 ### Slider
 
