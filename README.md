@@ -59,6 +59,6 @@ On mobile, we will only initiate sliding if it is clear the user is not trying t
 
 The default values for these settings are `minDistanceToBeginInteraction={15}` and `maxAngleToBeginInteraction={20}`, but you can configure them as you wish. The angle is done in degrees, and looks like this (where the purple area is the angles that will start an interaction, and theta is maxAngleToBeginInteraction).
 
-![Angles demo](https://raw.githubusercontent.com/jacobp100/react-twentytwenty/gh-pages/assets/angles.png)
+![Angles demo](https://raw.githubusercontent.com/jacobp100/react-twentytwenty/master/assets/angles.png)
 
 You can turn off this all together by setting the maxAngleToBeginInteraction to Infinity and the minDistanceToBeginInteraction to zero.
