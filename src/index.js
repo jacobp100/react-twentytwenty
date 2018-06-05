@@ -54,6 +54,8 @@ export default class TwentyTwenty extends Component {
         return;
       }
     }
+    
+    if (isTouch) e.preventDefault();
 
     const { left, width } = this.refs.component.getBoundingClientRect();
     let position = (pageX - left) / width;
@@ -71,7 +73,7 @@ export default class TwentyTwenty extends Component {
   }
 
   beginDrag(e) {
-    if (e) e.preventDefault();
+    if (e != null && !('touches' in e)) e.preventDefault();
     if (!this.props.isDraggingEnabled) return;
 
     const { pageX, pageY } = ('touches' in e)
