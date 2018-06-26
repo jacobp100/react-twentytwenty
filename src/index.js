@@ -59,7 +59,7 @@ export default class TwentyTwenty extends Component {
 
     if (isTouch) e.preventDefault();
 
-    const { left, width } = this.refs.component.getBoundingClientRect();
+    const { left, width } = this.refs.component.current.getBoundingClientRect();
     let position = (pageX - left) / width;
     position = Math.max(Math.min(position, 1), 0);
 
