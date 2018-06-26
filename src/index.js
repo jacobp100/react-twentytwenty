@@ -19,6 +19,8 @@ export default class TwentyTwenty extends Component {
     this.beginDrag = this.beginDrag.bind(this);
     this.endDrag = this.endDrag.bind(this);
     this.onDragMove = this.onDragMove.bind(this);
+
+    this.componentRef = React.createRef();
   }
 
   componentWillUnmount() {
@@ -54,10 +56,10 @@ export default class TwentyTwenty extends Component {
         return;
       }
     }
-    
+
     if (isTouch) e.preventDefault();
 
-    const { left, width } = this.refs.component.getBoundingClientRect();
+    const { left, width } = this.refs.component.current.getBoundingClientRect();
     let position = (pageX - left) / width;
     position = Math.max(Math.min(position, 1), 0);
 
@@ -111,7 +113,7 @@ export default class TwentyTwenty extends Component {
 
     return (
       <div
-        ref="component"
+        ref={this.componentRef}
         style={{ position: 'relative', overflow: 'hidden', whiteSpace: 'nowrap' }}
         onMouseDown={this.beginDrag}
         onTouchStart={this.beginDrag}
