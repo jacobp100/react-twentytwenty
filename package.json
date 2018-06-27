@@ -1,6 +1,6 @@
 {
   "name": "react-twentytwenty",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "TwentyTwenty component for React",
   "main": "index.js",
   "scripts": {
@@ -19,9 +19,7 @@
     "compare",
     "image"
   ],
-  "files": [
-    "index.js"
-  ],
+  "files": ["index.js"],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -44,7 +42,7 @@
     "webpack": "^1.13.0"
   },
   "peerDependencies": {
-    "react": "^15.0.2 || ^16.0.0"
+    "react": "^16.3.0"
   },
   "dependencies": {
     "prop-types": "^15.6.0"

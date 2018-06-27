@@ -20493,7 +20493,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _this.endDrag = _this.endDrag.bind(_this);
 	    _this.onDragMove = _this.onDragMove.bind(_this);
 	
-	    _this.componentRef = _react2.default.createRef();
+	    _this.container = _react2.default.createRef();
 	    return _this;
 	  }
 	
@@ -20544,9 +20544,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      if (isTouch) e.preventDefault();
 	
-	      var _refs$component$getBo = this.refs.component.getBoundingClientRect(),
-	          left = _refs$component$getBo.left,
-	          width = _refs$component$getBo.width;
+	      var _container$current$ge = this.container.current.getBoundingClientRect(),
+	          left = _container$current$ge.left,
+	          width = _container$current$ge.width;
 	
 	      var position = (pageX - left) / width;
 	      position = Math.max(Math.min(position, 1), 0);
@@ -20610,7 +20610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _react2.default.createElement(
 	        'div',
 	        {
-	          ref: this.componentRef,
+	          ref: this.container,
 	          style: { position: 'relative', overflow: 'hidden', whiteSpace: 'nowrap' },
 	          onMouseDown: this.beginDrag,
 	          onTouchStart: this.beginDrag
