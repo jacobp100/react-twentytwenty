@@ -1,6 +1,6 @@
 {
   "name": "react-twentytwenty",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "TwentyTwenty component for React",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,9 @@
     "compare",
     "image"
   ],
-  "files": ["index.js"],
+  "files": [
+    "index.js"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
