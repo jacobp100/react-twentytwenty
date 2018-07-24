@@ -20,7 +20,11 @@ export default class TwentyTwenty extends Component {
     this.endDrag = this.endDrag.bind(this);
     this.onDragMove = this.onDragMove.bind(this);
 
-    this.container = React.createRef();
+    // TODO: Replace with React.createRef() when React 16.3 is more widely adopted
+    this.container = element => {
+      this.container.current = element;
+    };
+    this.container.current = null;
   }
 
   componentWillUnmount() {

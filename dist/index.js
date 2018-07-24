@@ -20493,7 +20493,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _this.endDrag = _this.endDrag.bind(_this);
 	    _this.onDragMove = _this.onDragMove.bind(_this);
 	
-	    _this.container = _react2.default.createRef();
+	    // TODO: Replace with React.createRef() when React 16.3 is more widely adopted
+	    _this.container = function (element) {
+	      _this.container.current = element;
+	    };
+	    _this.container.current = null;
 	    return _this;
 	  }
 	
