@@ -92,15 +92,28 @@ export default class TwentyTwenty extends Component {
     document.addEventListener('mouseup', this.endDrag);
     document.addEventListener('touchmove', this.onDragMove);
     document.addEventListener('touchend', this.endDrag);
+
+    if (this.props.onDragStart) {
+      this.props.onDragStart();
+    }
   }
 
-  endDrag() {
+  endDrag(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
     document.removeEventListener('mousemove', this.onDragMove);
     document.removeEventListener('mouseup', this.endDrag);
     document.removeEventListener('touchmove', this.onDragMove);
     document.removeEventListener('touchend', this.endDrag);
 
     this.setState({ isDragging: false, startY: NaN, endY: NaN });
+
+    if (this.props.onDragEnd) {
+      this.props.onDragEnd();
+    }
   }
 
   render() {
@@ -191,6 +204,8 @@ TwentyTwenty.propTypes = {
   position: PropTypes.number,
   isDraggingEnabled: PropTypes.bool,
   onChange: PropTypes.func,
+  onDragStart: PropTypes.func,
+  onDragEnd: PropTypes.func,
 };
 
 TwentyTwenty.defaultProps = {
